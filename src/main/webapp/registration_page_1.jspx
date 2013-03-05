@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)register.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : register
+    Created on : 05.01.2013, 23:24:49
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <!-- Sets the A value to system default if not been changed by user -->
+    <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+    <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+    <l:setBundle basename="Localizations"/> 
+    <x:set var="link_from" value="registration_page_1.jspx" scope="session"/>
+    
+    <!-- Localization messages -->
+    <l:message key="register_title" var="title"/>
+    <l:message key="register_e_mail" var="e_mail_mess"/>
+    <l:message key="register_password1" var="password1_mess"/>
+    <l:message key="register_password2" var="password2_mess"/>
+    <l:message key="register_first_name" var="first_name_mess"/>
+    <l:message key="register_second_name" var="second_name_mess"/>
+    <l:message key="register_third_name" var="third_name_mess"/>
+    <l:message key="register_faculty" var="faculty_mess"/>
+    <l:message key="register_submit" var="submit"/>
+    <l:message key="register_error_login" var="error_email"/>
+    <l:message key="register_error_email_dup" var="error_email_dup"/>
+    <l:message key="register_error_pass" var="error_pass"/>
+    <l:message key="register_error_pass_conf" var="error_pass_conf"/>
+    <l:message key="register_error_pass_len" var="error_pass_len"/>
+    <l:message key="register_error_name" var="error_name"/>
+    <l:message key="register_error_surname" var="error_surname"/>
+    <l:message key="register_error_patronymic" var="error_patronymic"/>
+    <l:message key="register_final_mess" var="final_mess"/>
+    <l:message key="register_back_title" var="back_title"/>
+    <html>
+        <head>
+            <title>Register</title>
+        </head>
+        <body>
+            <x:import url="\WEB-INF\global_language_selection.jspx"/>
+            <h3>
+                <x:out value="${title}"/>
+            </h3>
+            <form method="POST" action="ControllerMain?command=REGISTRATION_PAGE_1">
+                <table>
+                    <tr>
+                        <td><x:out value="${e_mail_mess}"/></td>
+                        <td><input type="text" name="e_mail" value="${email_value}"/></td>
+                        <td><x:out value="${not empty email_error ? error_email : ''}"/>
+                            <x:out value="${not empty email_dup_error ? error_email_dup : ''}"/></td>
+                    </tr>
+                    <tr>
+                        <td><x:out value="${password1_mess}"/></td>
+                        <td><input type="password" name="password1" value="${password_value}"/></td>
+                    </tr>
+                    <tr>
+                        <td><x:out value="${password2_mess}"/></td>
+                        <td><input type="password" name="password2" value="${password_value}"/></td>
+                        <td><x:out value="${not empty password_error ? error_pass : ''}"/>
+                        <x:out value="${not empty password_confirm_error ? error_pass_conf : ''}"/>
+                        <x:out value="${not empty password_length_error ? error_pass_len : ''}"/></td>
+                    </tr>
+                    <tr>
+                        <td><x:out value="${first_name_mess}"/></td>
+                        <td><input type="text" name="first_name" value="${first_name_value}"/></td>
+                        <td><x:out value="${not empty first_name_error ? error_name : ''}"/></td>
+                    </tr>
+                    <tr>
+                        <td><x:out value="${second_name_mess}"/></td>
+                        <td><input type="text" name="second_name" value="${last_name_value}"/></td>
+                        <td><x:out value="${not empty last_name_error ? error_surname : ''}"/></td>
+                    </tr>
+                    <tr>
+                        <td><x:out value="${third_name_mess}"/></td>
+                        <td><input type="text" name="third_name" value="${third_name_value}"/></td>
+                        <td><x:out value="${not empty third_name_error ? error_patronymic : ''}"/></td>
+                    </tr>
+                </table>
+                <br/>
+                <table>
+                    <tr>
+                        <td><x:out value="${faculty_mess}"/></td>
+                        <td><select name="faculty_id" size="1">
+                                <x:forEach items="${faculties_list}" var="cur_faculty">
+                                    <option value="${cur_faculty.getId()}">${cur_faculty.getName()} (${cur_faculty.getFacullty_abbreviation()})</option>
+                                </x:forEach>
+                            </select></td>
+                    </tr>
+                </table>
+                <br/>
+                <x:out value="${final_mess}"/>
+                <br/>
+                <table>
+                    <tr>
+                        <td>
+                            <input type="button" value="${back_title}" onclick="history.back()"/>
+                        </td>
+                        <td>
+                            <input type="submit" value="${submit}"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </body>
+    </html>
+
+</jsp:root>

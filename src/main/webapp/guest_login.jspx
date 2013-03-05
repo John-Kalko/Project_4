@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)login.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : login
+    Created on : 29.12.2012, 4:02:49
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <!-- Sets the A value to system default if not been changed by user -->
+    <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+    <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+    <l:setBundle basename="Localizations"/> 
+    <x:set var="link_from" value="guest_login.jspx" scope="session"/>
+
+    <!-- Localization messages -->
+    <l:message key="login_title" var="title"/>
+    <l:message key="login_e_mail" var="e_mail"/>
+    <l:message key="login_password" var="password"/>
+    <l:message key="login_back" var="back"/>
+    <l:message key="login_submit" var="submit"/>
+    <l:message key="login_error" var="error"/>
+
+    <html>
+        <head>
+            <title>Login</title>
+        </head>
+        <body>
+            <x:import url="\WEB-INF\global_language_selection.jspx"/>
+            <h3>
+                <x:out value="${title}"/>
+            </h3>
+            <x:out value="${not empty error_type ? error : ''}"/>
+            <form method="POST" action="ControllerMain?command=GUEST_PROCESS_LOGIN">
+                <table>
+                    <tr>
+                        <td>
+                            <x:out value="${e_mail}"/>
+                        </td>
+                        <td>
+                            <input type="text" name="e_mail"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <x:out value="${password}"/>
+                        </td>
+                        <td>
+                            <input type="password" name="password"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="button" value="${back}" onclick="history.back()"/>
+                        </td>
+                        <td>
+                            <input type="submit" value="${submit}"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </body>
+    </html>
+</jsp:root>

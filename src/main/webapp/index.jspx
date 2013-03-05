@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)index.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : index
+    Created on : 21.12.2012, 5:36:39
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <!-- Sets the A value to system default if not been changed by user -->
+    <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+    <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+    <l:setBundle basename="Localizations"/> 
+    <x:set var="link_from" value="index.jspx" scope="session"/>
+
+    <!-- Localization messages -->
+    <l:message key="index_welcomeString" var="welcomeString"/>
+    <l:message key="index_authenificate" var="authenificate"/>
+    <l:message key="index_facultiesList" var="faculties_list"/>
+    <l:message key="index_register" var="register"/>
+    <html>
+        <head>
+            <title>Welcome to the NTUU "KPI"</title>
+        </head>
+        <body>
+            <x:import url="/WEB-INF/global_language_selection.jspx"/>
+            <h3>
+                <x:out value="${welcomeString}"/>
+            </h3>
+            <table>
+                <td><tr>
+                <form method="POST" action="ControllerMain?command=GUEST_GET_FACULTIES">
+                    <input type="submit" value="${faculties_list}"/>
+                </form>
+            </tr>
+            <tr>
+            <input type="button" value="${authenificate}" onclick="self.location.href='guest_login.jspx'"/>
+        </tr>
+        <tr>
+        <form method="POST" action="ControllerMain?command=REGISTRATION_GET_FACULTIES">
+            <input type="submit" value="${register}"/>
+        </form>
+    </tr>
+</td>
+</table>
+
+</body>
+</html>
+
+</jsp:root>

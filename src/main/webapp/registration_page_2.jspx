@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)register.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : register
+    Created on : 05.01.2013, 23:24:49
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <!-- Sets the A value to system default if not been changed by user -->
+    <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+    <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+    <l:setBundle basename="Localizations"/> 
+    <x:set var="link_from" value="registration_page_2.jspx" scope="session"/>
+
+    <!-- Localization messages -->
+    <l:message key="register_marks_title" var="title"/>
+    <l:message key="register_marks_general_rate_type" var="general_rate_type"/>
+    <l:message key="register_marks_ukrainian_type" var="ukrainian_type"/>
+    <l:message key="register_marks_foreign_type" var="foreign_type"/>
+    <l:message key="register_marks_math_type" var="math_type"/>
+    <l:message key="register_marks_chemistry_type" var="chemistry_type"/>
+    <l:message key="register_marks_physics_type" var="physics_type"/>
+    <l:message key="register_marks_history_type" var="history_type"/>
+    <l:message key="register_marks_submit" var="submit"/>
+    <l:message key="register_marks_error_code" var="error_code"/>
+    <l:message key="register_marks_back" var="back"/>
+
+    <html>
+        <head>
+            <title>Register_marks</title>
+        </head>
+        <body>
+            <x:import url="\WEB-INF\global_language_selection.jspx"/>
+            <h3>
+                <x:out value="${title}"/>
+            </h3>
+            <x:out value="${not empty error_attr ? error_code : ''}"/>
+            <br/>
+            <form method="POST" action="ControllerMain?command=REGISTRATION_PAGE_2">
+                <table>
+                    <tr>
+                        <td>
+                            <x:out value="${general_rate_type}"/>
+                        </td>
+                        <td>
+                            <input type="text" name="average_grade" value="${average_grade_value}"/>
+                        </td>
+                    </tr>
+                    <x:forEach items="${sessionScope.list_of_subjects}" var="faculty">
+                        <x:if test="${faculty.getId() eq 1}">
+                            <tr><td>
+                                    <x:out value="${ukrainian_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="ukrainian_grade" value="${ukrainian_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                            <x:if test="${faculty.getId() eq 2}">
+                            <tr><td>
+                                    <x:out value="${foreign_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="foreign_grade" value="${foreign_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                            <x:if test="${faculty.getId() eq 3}">
+                            <tr><td>
+                                    <x:out value="${math_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="math_grade" value="${math_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                            <x:if test="${faculty.getId() eq 4}">
+                            <tr><td>
+                                    <x:out value="${chemistry_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="chemistry_grade" value="${chemistry_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                            <x:if test="${faculty.getId() eq 5}">
+                            <tr><td>
+                                    <x:out value="${physics_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="physics_grade" value="${physics_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                            <x:if test="${faculty.getId() eq 6}">
+                            <tr><td>
+                                    <x:out value="${history_type}"/>
+                                </td>
+                                <td>
+                                    <input type="text" name="history_grade" value="${history_grade_value}"/>
+                                </td></tr>
+                            </x:if>
+                        </x:forEach>
+                </table>
+                <input type="button" value="${back}" onclick="self.location.href='registration_page_1.jspx'"/>
+                <input type="submit" value="${submit}"/>
+            </form>
+        </body>
+    </html>
+
+</jsp:root>

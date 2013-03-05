@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)faculties.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : faculties
+    Created on : 11.01.2013, 1:51:23
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page"
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <!-- Sets the A value to system default if not been changed by user -->
+    <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+    <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+    <l:setBundle basename="Localizations"/> 
+    <x:set var="link_from" value="global_faculties.jspx" scope="session"/>
+
+    <!-- Localization messages -->
+    <l:message key="faculties_welcome_string" var="welcome_string"/>
+    <l:message key="faculties_faculty_name" var="faculty_name"/>
+    <l:message key="faculties_faculty_abbr" var="faculty_abbr"/>
+    <l:message key="faculties_faculty_score" var="faculty_score"/>
+    <l:message key="faculties_faculty_quota" var="faculty_quota"/>
+    <l:message key="faculties_no_pass_mark" var="no_pass_mark"/>
+    <l:message key="faculties_previous_page" var="previous_page"/>
+
+    <html>
+        <head>
+            <title>Faculties information</title>
+        </head>
+        <body>
+            <x:import url="\WEB-INF\global_language_selection.jspx"/>
+            <h3><x:out value="${welcome_string}"/></h3>
+            <table border="1">
+                <tr align="center">
+                    <td>
+                        <x:out value="${faculty_name}"/>
+                    </td>
+                    <td>
+                        <x:out value="${faculty_abbr}"/>
+                    </td>
+                    <td>
+                        <x:out value="${faculty_score}"/>
+                    </td>
+                    <td>
+                        <x:out value="${faculty_quota}"/>
+                    </td>
+                </tr>
+                <x:forEach items="${faculties_list}" var="cur_faculty">
+                    <tr>
+                        <td>
+                            <x:out value="${cur_faculty.getName()}"/>
+                        </td>
+                        <td align="center">
+                            <x:out value="${cur_faculty.getFacullty_abbreviation()}"/>
+                        </td>
+                        <td align="center">
+                            <x:out value="${cur_faculty.getPassMark() != '0.0' ? 
+                                            cur_faculty.getPassMark() : no_pass_mark}"/>
+                        </td>
+                        <td align="center">
+                            <x:out value="${cur_faculty.getQuota()}"/>
+                        </td>
+                    </tr>
+                </x:forEach>
+            </table>
+            <input type="button" value="${previous_page}" onclick="history.back()"/>
+        </body>
+    </html>
+
+</jsp:root>

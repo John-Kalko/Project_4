@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)apply_report.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+ 
+    Document   : apply_report
+    Created on : 13.01.2013, 22:06:12
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <x:choose>
+        <x:when test="${admin_check == 229099}">
+
+            <!-- Sets the A value to system default if not been changed by user -->
+            <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+            <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+            <l:setBundle basename="Localizations"/> 
+            <x:set var="link_from" value="admin_apply_report.jspx" scope="session"/>
+
+            <!-- Localization messages -->
+            <l:message key="apply_report_welcome_string" var="welcome_string"/>
+            <l:message key="apply_report_faculty_call" var="faculty_call"/>
+            <l:message key="apply_report_make_filter" var="make_filter"/>
+            <l:message key="apply_report_enrollee_id_title" var="enrollee_id_title"/>
+            <l:message key="apply_report_enrollee_first_title" var="enrollee_first_title"/>
+            <l:message key="apply_report_enrollee_last_title" var="enrollee_last_title"/>
+            <l:message key="apply_report_enrollee_third_title" var="enrollee_third_title"/>
+            <l:message key="apply_report_enrollee_average_title" var="enrollee_average_title"/>
+            <l:message key="apply_report_enrollee_result_place_title" var="enrollee_result_place_title"/>
+            <l:message key="apply_report_submit" var="submit"/>
+            <l:message key="apply_report_is_done_message" var="is_done_message"/>
+            <l:message key="apply_report_is_error_occured_message" var="is_error_occured_message"/>
+            <l:message key="apply_report_main_page_button" var="main_page_button"/>
+
+            <html>
+                <head>
+                    <title>Apply report</title>
+                </head>
+                <body>
+                    <x:import url="\WEB-INF\global_language_selection.jspx"/>
+                    <x:out value="${welcome_string}"/>
+                    <table>
+                        <form method="POST" action="ControllerMain?command=ADMIN_GET_QUALIFIED_ENROLLES">
+                            <tr>
+                                <td>
+                                    <x:out value="${faculty_call}"/>
+                                </td>
+                                <td>
+                                    <select name="faculty_id" size="1">
+                                        <x:forEach items="${faculties_list}" var="cur_faculty">
+                                            <option value="${cur_faculty.getId()}">${cur_faculty.getName()} (${cur_faculty.getFacullty_abbreviation()})</option>
+                                        </x:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" value="${make_filter}"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                    <x:if test="${not empty sessionScope.enrollees_final_list}">
+                        <form method="POST" action="ControllerMain?command=ADMIN_APPLY_REPORT">
+                            <table border="1">
+                                <tr align="center">
+                                    <td>
+                                        <x:out value="${enrollee_id_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_first_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_last_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_third_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_average_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_result_place_title}"/>
+                                    </td>
+                                </tr>
+                                <x:forEach var="enrollee" items="${sessionScope.enrollees_final_list}">
+                                    <x:set var="counter" value="${counter + 1}"/>
+                                    <tr>
+                                        <td align="center">
+                                            <x:out value="${enrollee.getId()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getFirstName()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getLastName()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getThirdName()}"/>
+                                        </td>
+                                        <td align="center">
+                                            <x:out value="${enrollee.getAverageRate()}"/>
+                                        </td>
+                                        <td align="center">
+                                            <x:out value="${counter}"/>
+                                        </td>
+                                    </tr>
+                                </x:forEach>
+                            </table>
+                            <input type="submit" value="${submit}"/>
+                        </form> 
+                    </x:if>
+                    <table>
+                        <tr>
+                            <td>
+                                <x:out value="${not empty flag_isDone ? is_done_message : ''}"/>
+                                <x:out value="${not empty flag_isErrorOccured ? is_error_occured_message : ''}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="button" value="${main_page_button}" onclick="self.location.href='admin_index.jspx'"/>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+            </html>
+        </x:when>
+        <x:otherwise>
+            <x:redirect url="global_error.jspx"/>
+        </x:otherwise>
+    </x:choose>
+</jsp:root>

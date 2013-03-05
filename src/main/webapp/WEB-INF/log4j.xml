@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)log4j.xml      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+-->
+<!DOCTYPE log4j:configuration SYSTEM "http://logging.apache.org/log4j/1.2/apidocs/org/apache/log4j/xml/doc-files/log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+    <!-- Appender for the exceptions only -->
+    <appender name="Exceptions" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="D:\\Java\\Projects\\Project_4_2\\Logs\\Exceptions.log"/>
+        <param name="MaxFileSize" value="1MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} [%-5p][%-16.16t][%30c{-2}] - %m%n"/>
+        </layout>
+    </appender>
+    
+    <!-- Appender for the web application life cycle information -->
+    <appender name="Information" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="D:\\Java\\Projects\\Project_4_2\\Logs\\Information.log"/>
+        <param name="MaxFileSize" value="1MB"/>
+        <param name="MaxBackupIndex" value="10"/>
+        <param name="Encoding" value="UTF-8"/>
+        <layout class="org.apache.log4j.EnhancedPatternLayout">
+            <param name="ConversionPattern" value="%d{ISO8601} - %m%n"/>
+        </layout>
+    </appender>
+
+    <logger name="InfoLog" additivity="false">
+        <level value="DEBUG"/>
+        <appender-ref ref="Information"/>
+    </logger>
+
+    <root>
+        <priority value="DEBUG"/>
+        <appender-ref ref="Exceptions"/>
+    </root>
+</log4j:configuration>

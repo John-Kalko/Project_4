@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)apply_enrollee.jspx      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+
+    Document   : apply_enrollee
+    Created on : 11.01.2013, 4:30:51
+    Author     : Калько Евгений
+-->
+<jsp:root xmlns:jsp="http://java.sun.com/JSP/Page" 
+          xmlns:x="http://java.sun.com/jstl/core_rt"
+          xmlns:l="http://java.sun.com/jstl/fmt_rt"
+          version="2.0">
+
+    <jsp:directive.page contentType="text/html" pageEncoding="UTF-8"/>
+
+    <x:choose>
+        <x:when test="${admin_check == 229099}">
+
+            <!-- Sets the A value to system default if not been changed by user -->
+            <x:set var="temp_locale" value="${pageContext.response.locale}" scope="page"/>
+            <l:setLocale value="${not empty lang ? lang : temp_locale}"/>
+            <l:setBundle basename="Localizations"/> 
+            <x:set var="link_from" value="admin_apply_enrollee.jspx" scope="session"/>
+
+            <!-- Localization messages -->
+            <l:message key="apply_enrollee_welcome_string" var="welcome_string"/>
+            <l:message key="apply_enrollee_faculty_call" var="faculty_call"/>
+            <l:message key="apply_enrollee_enrollees_number" var="enrollees_number"/>
+            <l:message key="apply_enrollee_make_filter" var="make_filter"/>
+            <l:message key="apply_enrollee_enrollee_id_title" var="enrollee_id_title"/>
+            <l:message key="apply_enrollee_enrollee_first_title" var="enrollee_first_title"/>
+            <l:message key="apply_enrollee_enrollee_last_title" var="enrollee_last_title"/>
+            <l:message key="apply_enrollee_enrollee_third_title" var="enrollee_third_title"/>
+            <l:message key="apply_enrollee_enrollee_average_title" var="enrollee_average_title"/>
+            <l:message key="apply_enrollee_subject_title_ukr" var="subject_title_ukr"/>
+            <l:message key="apply_enrollee_subject_title_foreign" var="subject_title_foreign"/>
+            <l:message key="apply_enrollee_subject_title_math" var="subject_title_math"/>
+            <l:message key="apply_enrollee_subject_title_chemics" var="subject_title_chemics"/>
+            <l:message key="apply_enrollee_subject_title_physics" var="subject_title_physics"/>    
+            <l:message key="apply_enrollee_subject_title_history" var="subject_title_history"/>
+            <l:message key="apply_enrollee_apply_title" var="apply_title"/>
+            <l:message key="apply_enrollee_discard_title" var="discard_title"/>
+            <l:message key="apply_enrollee_cancel_title" var="cancel_title"/>
+            <l:message key="apply_enrollee_submit" var="submit"/>
+            <l:message key="apply_enrollee_is_done_message" var="is_done_message"/>
+            <l:message key="apply_enrollee_main_page_button" var="main_page_button"/>
+
+            <html>
+                <head>
+                    <title>Apply enrollees</title>
+                </head>
+                <body>
+                    <x:import url="/WEB-INF/global_language_selection.jspx"/>
+                    <x:out value="${welcome_string}"/>
+                    <table>
+                        <form method="POST" action="ControllerMain?command=ADMIN_GET_ENROLLES">
+                            <tr>
+                                <td>
+                                    <x:out value="${faculty_call}"/>
+                                </td>
+                                <td>
+                                    <select name="faculty_id" size="1">
+                                        <x:forEach items="${faculties_list}" var="cur_faculty">
+                                            <option value="${cur_faculty.getId()}">${cur_faculty.getName()} (${cur_faculty.getFacullty_abbreviation()})</option>
+                                        </x:forEach>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <x:out value="${enrollees_number}"/>
+                                </td>
+                                <td>
+                                    <select name="enrollees_number" size="1">
+                                        <option value="1">1</option>
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="submit" value="${make_filter}"/>
+                                </td>
+                            </tr>
+                        </form>
+                    </table>
+                    <x:if test="${not empty sessionScope.enrollees_list}">
+                        <form method="POST" action="ControllerMain?command=ADMIN_APPLY_ENROLLEE">
+                            <table border="1">
+                                <tr align="center">
+                                    <td>
+                                        <x:out value="${enrollee_id_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_first_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_last_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_third_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${enrollee_average_title}"/>
+                                    </td>
+                                    <x:forEach items="${sessionScope.enrollees_list.get(0).getSubjects()}" var="subject_id">
+                                        <td>
+                                            <x:if test="${subject_id.getId() eq 1}">
+                                                <x:out value="${subject_title_ukr}"/>
+                                            </x:if>
+                                            <x:if test="${subject_id.getId() eq 2}">
+                                                <x:out value="${subject_title_foreign}"/>
+                                            </x:if>
+                                            <x:if test="${subject_id.getId() eq 3}">
+                                                <x:out value="${subject_title_math}"/>
+                                            </x:if>
+                                            <x:if test="${subject_id.getId() eq 4}">
+                                                <x:out value="${subject_title_chemics}"/>
+                                            </x:if>
+                                            <x:if test="${subject_id.getId() eq 5}">
+                                                <x:out value="${subject_title_physics}"/>
+                                            </x:if>
+                                            <x:if test="${subject_id.getId() eq 6}">
+                                                <x:out value="${subject_title_history}"/>
+                                            </x:if>
+                                        </td>
+                                    </x:forEach>
+                                    <td>
+                                        <x:out value="${apply_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${discard_title}"/>
+                                    </td>
+                                    <td>
+                                        <x:out value="${cancel_title}"/>
+                                    </td>
+                                </tr>
+                                <x:forEach var="enrollee" items="${sessionScope.enrollees_list}">
+                                    <x:set var="counter" value="${counter + 1}"/>
+                                    <tr>
+                                        <td align="center">
+                                            <x:out value="${enrollee.getId()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getFirstName()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getLastName()}"/>
+                                        </td>
+                                        <td>
+                                            <x:out value="${enrollee.getThirdName()}"/>
+                                        </td>
+                                        <td align="center">
+                                            <x:out value="${enrollee.getAverageRate()}"/>
+                                        </td>
+                                        <x:forEach items="${enrollee.getSubjects()}" var="subject_rates">
+                                            <td align="center">
+                                                <x:out value="${subject_rates.getSubject_mark()}"/>
+                                            </td>
+                                        </x:forEach>
+                                        <td align="center">
+                                            <input type="radio" name="${counter}" value="apply"/>
+                                        </td>
+                                        <td align="center">
+                                            <input type="radio" name="${counter}" value="discard"/>
+                                        </td>
+                                        <td align="center">
+                                            <input type="radio" name="${counter}" value="cancel" checked="checked"/>
+                                        </td>
+                                    </tr>
+                                </x:forEach>
+                            </table>
+                            <input type="submit" value="${submit}"/>
+                        </form> 
+                    </x:if>
+                    <table>
+                        <tr>
+                            <td>
+                                <x:out value="${not empty flag_isDone ? is_done_message : ''}"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="button" value="${main_page_button}" onclick="self.location.href='admin_index.jspx'"/>
+                            </td>
+                        </tr>
+                    </table>
+                </body>
+            </html>
+        </x:when>
+        <x:otherwise>
+            <x:redirect url="global_error.jspx"/>
+        </x:otherwise>
+    </x:choose>
+</jsp:root>

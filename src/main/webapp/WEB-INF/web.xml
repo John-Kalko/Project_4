@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+ @(#)web.xml      0.1 13/01/16
+ 
+ The Admissions Committee Web System.
+ Kiev, Ukraine.
+-->
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jspx</welcome-file>
+    </welcome-file-list>
+    <servlet>
+        <servlet-name>ControllerMain</servlet-name>
+        <servlet-class>ua.epam.kalko.web.ControllerMain</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ControllerMain</servlet-name>
+        <url-pattern>/ControllerMain</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>SetCharFilter</filter-name>
+        <filter-class>ua.epam.kalko.web.SetCharFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SetCharFilter</filter-name>
+        <url-pattern>/SetCharFilter</url-pattern>
+        <servlet-name>ControllerMain</servlet-name>
+    </filter-mapping>
+</web-app>
